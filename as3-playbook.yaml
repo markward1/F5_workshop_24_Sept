@@ -1,0 +1,24 @@
+---
+- name: Deploy AS3 Declaration
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    uri_method: "POST"
+
+  vars_files:
+    - ../creds/bigip-creds.yaml
+
+  tasks:
+    - name: Create a JIRA issue
+      uri:
+        url: https://18.133.114.52/mgmt/shared/appsvcs/declare
+        user: "{{ bigip_user }}"
+        password: "{{ bigip_pass }}"
+        method: "{{ uri_method }}"
+        body: "{{ lookup('file','as3-film-declaration.json') }}"
+        force_basic_auth: yes
+        status_code: 200
+        body_format: json
+...
